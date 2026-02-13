@@ -4,6 +4,8 @@
 <h2>Welcome, {{ session['user_name'] }} 👋</h2>
 
 <hr>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 
 {% if trip %}
 <div class="card p-3 shadow-sm mb-4">
@@ -104,6 +106,9 @@ function updateProgress(percent) {
     color: white;
 }
 </style>
+<a href="{{ url_for('budget') }}">Travel Budget Manager</a>
+<a href="{{ url_for('budget', trip_name=trip['name']) }}">Manage Budget</a>
+
 
 
 

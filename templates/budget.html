@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Travel Budget Manager</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+<!-- Add Budget Form -->
+<form method="POST" action="{{ url_for('add_budget') }}">
+    <input type="text" name="trip_name" placeholder="Trip Name" required>
+    <input type="number" name="total_budget" placeholder="Total Budget" required>
+    <button type="submit">Add Budget</button>
+</form>
+
+<hr>
+
+<!-- Add Expense Form -->
+<form method="POST" action="{{ url_for('add_expense') }}">
+    <input type="text" name="trip_name" placeholder="Trip Name" required>
+    <input type="text" name="category" placeholder="Category" required>
+    <input type="number" name="amount" placeholder="Amount" required step="0.01">
+    <input type="date" name="date" required>
+    <button type="submit">Add Expense</button>
+</form>
+
+<hr>
+
+<!-- Budget Summary -->
+<h3>Budgets & Expenses</h3>
+{% for b in budgets %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <strong>{{ b['trip_name'] }}</strong> – Total Budget: ₹{{ b['total_budget'] }}
+
+        <!-- Calculate total spent -->
+        {% set spent = 0 %}
+        {% for e in expenses %}
+            {% if e['trip_name'] == b['trip_name'] %}
+                {% set spent = spent + e['amount'] %}
+            {% endif %}
+        {% endfor %}
+        
+        <p>Spent: ₹{{ spent }} | Remaining: ₹{{ b['total_budget'] - spent }}</p>
+
+        <!-- Progress Bar -->
+        <div style="background:#eee; width:100%; height:20px; border-radius:5px;">
+            <div style="background:#4caf50; height:100%; width:{{ (spent/b['total_budget']*100)|round(0) }}%; border-radius:5px;"></div>
+        </div>
+
+        {% if spent > b['total_budget'] %}
+            <p style="color:red;">Alert: You exceeded your budget!</p>
+        {% endif %}
+    </div>
+
+
+
+{% endfor %}
+
+
+{% for b in budgets %}
+  <!-- Budget summary card -->
+{% endfor %}
+
+{% endblock %}
+
