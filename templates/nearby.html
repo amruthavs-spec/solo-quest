@@ -1,33 +1,44 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoloQuest - Nearby Services</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h2 { text-align: center; margin-bottom: 20px; }
+  ul { list-style-type: none; padding: 0; }
+  li { margin: 10px 0; }
+  a { margin-left: 10px; text-decoration: none; color: white; background: #007bff; padding: 5px 10px; border-radius: 5px; }
+  a:hover { background: #0056b3; }
+  .back-btn { margin-bottom: 20px; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+</style>
+</head>
+<body>
 
-<h2>Nearby Services</h2>
-<hr>
+<h2>📍 Nearby Services</h2>
 
-<h4>🏥 Hospitals</h4>
-<div class="row">
-    {% for hospital in hospitals %}
-    <div class="col-md-4">
-        <div class="card p-3 shadow-sm mb-3">
-            <h5>{{ hospital.name }}</h5>
-            <p>{{ hospital.address }}</p>
-            <small>{{ hospital.distance }}</small>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+<!-- Back Button -->
+<a href="{{ url_for('dashboard') }}">
+  <button class="back-btn">⬅ Back to Dashboard</button>
+</a>
 
-<h4 class="mt-4">🚔 Police Stations</h4>
-<div class="row">
-    {% for station in police %}
-    <div class="col-md-4">
-        <div class="card p-3 shadow-sm mb-3">
-            <h5>{{ station.name }}</h5>
-            <p>{{ station.address }}</p>
-            <small>{{ station.distance }}</small>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+<ul>
+  <li>Hotel Sunshine — 0.5 km
+      <a href="https://www.google.com/maps/dir/?api=1&destination=28.616,77.210" target="_blank">Navigate 🗺️</a>
+  </li>
+  <li>City Hospital — 0.8 km
+      <a href="https://www.google.com/maps/dir/?api=1&destination=28.612,77.207" target="_blank">Navigate 🗺️</a>
+  </li>
+  <li>Central Police Station — 1 km
+      <a href="https://www.google.com/maps/dir/?api=1&destination=28.615,77.211" target="_blank">Navigate 🗺️</a>
+  </li>
+  <li>Cafe Delight — 0.6 km
+      <a href="https://www.google.com/maps/dir/?api=1&destination=28.614,77.208" target="_blank">Navigate 🗺️</a>
+  </li>
+</ul>
 
-{% endblock %}
+</body>
+</html>
+
+

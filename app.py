@@ -167,47 +167,15 @@ def planner():
 
     return render_template("planner.html")
 
-# ---------------- EMERGENCY ----------------
 
-@app.route("/emergency", methods=["GET", "POST"])
-def emergency():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
-    conn = sqlite3.connect(DATABASE)
-    c = conn.cursor()
-
-    if request.method == "POST":
-        name = request.form["name"]
-        relation = request.form["relation"]
-        phone = request.form["phone"]
-
-        c.execute("INSERT INTO contacts (user_id,name,relation,phone) VALUES (?,?,?,?)",
-                  (session["user_id"], name, relation, phone))
-        conn.commit()
-        flash("Contact added!", "success")
-
-    c.execute("SELECT * FROM contacts WHERE user_id=?", (session["user_id"],))
-    contacts = c.fetchall()
-
-    conn.close()
-    return render_template("emergency.html", contacts=contacts)
 
 # ---------------- NEARBY ----------------
-
 @app.route("/nearby")
 def nearby():
-    hospitals = [
-        {"name": "City Care Hospital", "address": "Main Road", "distance": "1.2 km"},
-        {"name": "Green Valley Clinic", "address": "Lake Street", "distance": "2.5 km"}
-    ]
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    return render_template("nearby.html")
 
-    police = [
-        {"name": "Central Police Station", "address": "Market Road", "distance": "1 km"},
-        {"name": "West Side Police", "address": "Hill Road", "distance": "3 km"}
-    ]
-
-    return render_template("nearby.html", hospitals=hospitals, police=police)
 
 # ---------------- SMART CHECKLIST ----------------
 @app.route("/checklist", methods=["GET", "POST"])
@@ -302,6 +270,97 @@ def checklist():
         priorities=priorities,
         notes=notes
     )
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+import sqlite3
+
+DATABASE = "solosafe.db"
+
+# ------------------ Emergency Contacts ------------------
+
+@app.route("/emergency")
+def emergency():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("SELECT * FROM emergency_contacts WHERE user_id=?", (session["user_id"],))
+    contacts = c.fetchall()
+    conn.close()
+
+    return render_template("emergency.html", contacts=contacts)
+
+# Add new emergency contact
+@app.route("/add_contact", methods=["POST"])
+def add_contact():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    name = request.form.get("name")
+    relationship = request.form.get("relationship")
+    phone = request.form.get("phone")
+
+    if not name or not phone:
+        flash("Name and phone are required!", "error")
+        return redirect(url_for("emergency"))
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute("""
+        INSERT INTO emergency_contacts (user_id, name, relationship, phone)
+        VALUES (?, ?, ?, ?)
+    """, (session["user_id"], name, relationship, phone))
+    conn.commit()
+    conn.close()
+
+    flash("Emergency contact added!", "success")
+    return redirect(url_for("emergency"))
+@app.route("/delete_contact/<int:contact_id>", methods=["POST"])
+def delete_contact(contact_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    # Delete the contact that matches user_id and contact_id
+    c.execute("DELETE FROM emergency_contacts WHERE id=? AND user_id=?", (contact_id, session["user_id"]))
+    conn.commit()
+    conn.close()
+
+    flash("Contact deleted successfully!", "success")
+    return redirect(url_for("emergency"))
+    
+@app.route("/award_badge/<badge_name>")
+def award_badge(badge_name):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+
+    # Check if user already has this badge
+    c.execute("SELECT * FROM badges WHERE user_id=? AND badge_name=?", (session["user_id"], badge_name))
+    exists = c.fetchone()
+
+    if not exists:
+        c.execute("INSERT INTO badges (user_id, badge_name) VALUES (?, ?)", (session["user_id"], badge_name))
+        conn.commit()
+    
+    conn.close()
+    return redirect(url_for("dashboard"))
+
+
+
+
+    flash("Emergency contact added!", "success")
+    return redirect(url_for("emergency"))
+
+
+
+
+
 
     
 

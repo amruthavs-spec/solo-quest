@@ -37,5 +37,76 @@
         <a href="/checklist" class="btn btn-outline-success w-100 mb-2">Safety Checklist</a>
     </div>
 </div>
+<a href="{{ url_for('nearby') }}">
+  <button type="button">Find Nearby Services 🗺️</button>
+</a>
+<a href="{{ url_for('emergency') }}">
+  <button type="button">Emergency Alert 🚨</button>
+</a>
+<h2>Your Badges</h2>
+<div class="badges-container">
+    {% if badges %}
+        {% for b in badges %}
+            <span class="badge">{{ b[0] }}</span>
+        {% endfor %}
+    {% else %}
+        <p>No badges earned yet. Complete tasks to earn badges!</p>
+    {% endif %}
+</div>
+
+<style>
+    .badges-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .badge {
+        background: gold;
+        color: black;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+</style>
+<div class="progress-container">
+    <div id="progress-bar" class="progress-bar"></div>
+    <p id="progress-text">0% Completed</p>
+</div>
+
+<script>
+function updateProgress(percent) {
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    progressBar.style.width = percent + "%";
+    progressText.textContent = percent + "% Completed";
+    if (percent === 100) {
+        alert("🎉 Congrats! You completed all tasks! 🎉");
+    }
+}
+</script>
+
+<style>
+.progress-container {
+    width: 100%;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+.progress-bar {
+    width: 0%;
+    height: 20px;
+    background: green;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+}
+</style>
+
+
+
+
 
 {% endblock %}

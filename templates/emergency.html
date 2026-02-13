@@ -1,40 +1,79 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts | SoloQuest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
 
-<h2>Emergency Contacts</h2>
-<hr>
+<div class="container">
+    <h1>🚨 Emergency Contacts</h1>
 
-<div class="card p-4 shadow-sm mb-4">
-    <form method="POST">
+    <!-- Back to Dashboard -->
+    <a href="{{ url_for('dashboard') }}">
+        <button type="button" class="back-btn">⬅ Back to Dashboard</button>
+    </a>
 
-        <div class="mb-3">
-            <input type="text" name="name" class="form-control" placeholder="Name" required>
-        </div>
+    <hr>
 
-        <div class="mb-3">
-            <input type="text" name="relation" class="form-control" placeholder="Relationship" required>
-        </div>
-
-        <div class="mb-3">
-            <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
-        </div>
-
-        <button type="submit" class="btn btn-danger w-100">Add Contact</button>
+    <!-- Add New Contact -->
+    <h3>Add New Contact</h3>
+    <form method="POST" action="{{ url_for('add_contact') }}">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <button type="submit">Add Contact</button>
     </form>
+
+    <hr>
+
+    <!-- Emergency Contacts List -->
+    <h3>Saved Contacts</h3>
+    {% if contacts %}
+        <ul class="contact-list">
+        {% for c in contacts %}
+            <li>
+                {{ c['name'] }} - {{ c['phone'] }}
+
+                <!-- Delete button -->
+                <form method="POST" action="{{ url_for('delete_contact', contact_id=c['id']) }}" style="display:inline;">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No emergency contacts saved.</p>
+    {% endif %}
+
+    <hr>
+
+    <!-- Emergency Alert Button -->
+    <button type="button" class="alert-btn" onclick="sendEmergencyAlert()">
+        🚨 Send Emergency Alert
+    </button>
+
 </div>
 
-<h4>Saved Contacts</h4>
+<script>
+function sendEmergencyAlert() {
+    {% if contacts %}
+        let message = "Emergency! Contact me immediately:\n\n";
+        {% for c in contacts %}
+            message += "{{ c['name'] }} - {{ c['phone'] }}\n";
+        {% endfor %}
+        alert(message); // For demo purposes
+    {% else %}
+        alert("No emergency contacts to alert!");
+    {% endif %}
+}
+</script>
 
-<div class="row">
-    {% for contact in contacts %}
-    <div class="col-md-4">
-        <div class="card p-3 mb-3 shadow-sm">
-            <h5>{{ contact[2] }}</h5>
-            <p>{{ contact[3] }}</p>
-            <p>{{ contact[4] }}</p>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+</body>
+</html>
 
-{% endblock %}
+
+
+
+

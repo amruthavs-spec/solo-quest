@@ -69,6 +69,23 @@
   {% endif %}
 
 </div> <!-- container -->
+<div id="timer">⏱ 00:00</div>
+<button onclick="startTimer()">Start Challenge</button>
+
+<script>
+let seconds = 0;
+let interval;
+
+function startTimer() {
+    interval = setInterval(() => {
+        seconds++;
+        let mins = Math.floor(seconds / 60);
+        let secs = seconds % 60;
+        document.getElementById('timer').textContent = `⏱ ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    }, 1000);
+}
+</script>
+
 
 </body>
 </html>
