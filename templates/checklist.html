@@ -1,24 +1,81 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoloQuest - Smart Travel Checklist</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
 
-<h2>Safety Checklist</h2>
-<hr>
+<h1>🧳 SoloQuest - Smart Travel Checklist</h1>
 
-<form method="POST">
+<div class="container">
 
-    {% for item in items %}
-    <div class="form-check mb-2">
-        <input class="form-check-input"
-               type="checkbox"
-               name="{{item}}"
-               {% if saved.get(item) == 1 %} checked {% endif %}>
-        <label class="form-check-label">
-            {{item}}
-        </label>
-    </div>
-    {% endfor %}
+  <!-- Back Button -->
+  <a href="{{ url_for('dashboard') }}">
+      <button type="button" class="back-btn">⬅ Back to Dashboard</button>
+  </a>
 
-    <button type="submit" class="btn btn-success mt-3">Save Checklist</button>
-</form>
+  <hr>
 
-{% endblock %}
+  {% if items %}
+  <form method="POST" id="checklistForm">
+
+    <!-- ---------------- BEFORE TRAVEL ---------------- -->
+    <h3>✈️ Before Travel</h3>
+    <ul>
+      {% for item in items['before_travel'] %}
+      <li>
+        <input type="checkbox" name="{{ item }}" id="{{ item }}" 
+          {% if saved.get(item) == 1 %} checked {% endif %}>
+        <label for="{{ item }}">{{ item }}</label>
+        <span class="priority">{{ priorities.get(item,'🟢') }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <textarea name="notes_before" placeholder="Notes (Optional)">{{ notes.get('before','') }}</textarea>
+
+    <!-- ---------------- DURING TRAVEL ---------------- -->
+    <h3>🗺 During Travel</h3>
+    <ul>
+      {% for item in items['during_travel'] %}
+      <li>
+        <input type="checkbox" name="{{ item }}" id="{{ item }}" 
+          {% if saved.get(item) == 1 %} checked {% endif %}>
+        <label for="{{ item }}">{{ item }}</label>
+        <span class="priority">{{ priorities.get(item,'🟢') }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <textarea name="notes_during" placeholder="Notes (Optional)">{{ notes.get('during','') }}</textarea>
+
+    <!-- ---------------- AT DESTINATION ---------------- -->
+    <h3>🏠 At Destination</h3>
+    <ul>
+      {% for item in items['at_destination'] %}
+      <li>
+        <input type="checkbox" name="{{ item }}" id="{{ item }}" 
+          {% if saved.get(item) == 1 %} checked {% endif %}>
+        <label for="{{ item }}">{{ item }}</label>
+        <span class="priority">{{ priorities.get(item,'🟢') }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <textarea name="notes_destination" placeholder="Notes (Optional)">{{ notes.get('destination','') }}</textarea>
+
+    <button type="submit">Save Checklist</button>
+  </form>
+  {% endif %}
+
+</div> <!-- container -->
+
+</body>
+</html>
+
+
+
+
+
+
+

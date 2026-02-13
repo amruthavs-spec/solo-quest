@@ -209,43 +209,103 @@ def nearby():
 
     return render_template("nearby.html", hospitals=hospitals, police=police)
 
-# ---------------- CHECKLIST ----------------
-
-checklist_items = [
-    "Share trip details with family",
-    "Save emergency contacts",
-    "Check local laws",
-    "Keep phone charged",
-    "Avoid isolated areas at night",
-    "Verify accommodation",
-    "Keep ID safe"
-]
-
+# ---------------- SMART CHECKLIST ----------------
 @app.route("/checklist", methods=["GET", "POST"])
 def checklist():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
+    user_id = session["user_id"]
+
+    # Connect to database
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
 
-    if request.method == "POST":
-        c.execute("DELETE FROM checklist WHERE user_id=?", (session["user_id"],))
-        for item in checklist_items:
-            status = 1 if request.form.get(item) else 0
-            c.execute("INSERT INTO checklist (user_id,item,status) VALUES (?,?,?)",
-                      (session["user_id"], item, status))
-        conn.commit()
-        flash("Checklist updated!", "success")
+    # Define checklist items by category
+    checklist_items = {
+        "before_travel": [
+            "Share trip details with family",
+            "Save emergency contacts",
+            "Check local laws",
+            "Research local customs",
+            "Check travel insurance"
+        ],
+        "during_travel": [
+            "Keep phone charged",
+            "Avoid isolated areas at night",
+            "Stay hydrated and eat safely",
+            "Use safe transportation options",
+            "Track expenses"
+        ],
+        "at_destination": [
+            "Verify accommodation",
+            "Keep ID safe",
+            "Know emergency exits",
+            "Keep copies of important documents",
+            "Follow local safety guidelines"
+        ]
+    }
 
-    c.execute("SELECT item,status FROM checklist WHERE user_id=?",
-              (session["user_id"],))
+    # Priority icons
+    priorities = {
+        "Share trip details with family": "🔴",
+        "Save emergency contacts": "🔴",
+        "Check local laws": "🟡",
+        "Research local customs": "🟡",
+        "Check travel insurance": "🟢",
+        "Keep phone charged": "🔴",
+        "Avoid isolated areas at night": "🔴",
+        "Stay hydrated and eat safely": "🟡",
+        "Use safe transportation options": "🟡",
+        "Track expenses": "🟢",
+        "Verify accommodation": "🔴",
+        "Keep ID safe": "🔴",
+        "Know emergency exits": "🟡",
+        "Keep copies of important documents": "🟢",
+        "Follow local safety guidelines": "🟡"
+    }
+
+    # Initialize notes dict
+    notes = {"before": "", "during": "", "destination": ""}
+
+    # Handle form submission
+    if request.method == "POST":
+        # Delete old checklist for user
+        c.execute("DELETE FROM checklist WHERE user_id=?", (user_id,))
+        conn.commit()
+
+        # Save new checklist
+        for category, items in checklist_items.items():
+            for item in items:
+                status = 1 if request.form.get(item) else 0
+                c.execute(
+                    "INSERT INTO checklist (user_id, item, status, category) VALUES (?,?,?,?)",
+                    (user_id, item, status, category)
+                )
+        # Save notes
+        notes["before"] = request.form.get("notes_before", "")
+        notes["during"] = request.form.get("notes_during", "")
+        notes["destination"] = request.form.get("notes_destination", "")
+        flash("Checklist updated!", "success")
+        conn.commit()
+
+    # Fetch saved checklist for this user
+    c.execute("SELECT item, status FROM checklist WHERE user_id=?", (user_id,))
     saved = dict(c.fetchall())
 
     conn.close()
-    return render_template("checklist.html",
-                           items=checklist_items,
-                           saved=saved)
+
+    return render_template(
+        "checklist.html",
+        items=checklist_items,
+        saved=saved,
+        priorities=priorities,
+        notes=notes
+    )
+
+    
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
