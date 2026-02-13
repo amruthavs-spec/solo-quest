@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="text-center py-5">
+    <h1 class="display-4 fw-bold">Travel Solo. Travel Safe.</h1>
+    <p class="lead">Your smart companion for safe and organized solo travel planning.</p>
+
+    {% if session.get('user_id') %}
+        <a href="/planner" class="btn btn-success btn-lg mt-3">Plan Your Trip</a>
+    {% else %}
+        <a href="/login" class="btn btn-success btn-lg mt-3">Get Started</a>
+    {% endif %}
+</div>
+
+<hr class="my-5">
+
+<div class="row text-center">
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h5>🗺 Itinerary Planner</h5>
+            <p>Create day-wise travel plans easily.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h5>🚨 Emergency Contacts</h5>
+            <p>Store important contacts securely.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h5>🏥 Nearby Services</h5>
+            <p>Find hospitals & police stations quickly.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h5>✅ Safety Checklist</h5>
+            <p>Ensure you're fully prepared before travel.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

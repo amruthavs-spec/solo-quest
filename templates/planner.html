@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Trip Itinerary Planner</h2>
+<hr>
+
+<div class="card p-4 shadow-sm">
+    <form method="POST">
+
+        <div class="mb-3">
+            <label>Destination</label>
+            <input type="text" name="destination" class="form-control" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Start Date</label>
+                <input type="date" name="start_date" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>End Date</label>
+                <input type="date" name="end_date" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Accommodation</label>
+            <input type="text" name="accommodation" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Transport Mode</label>
+            <select name="transport" class="form-control">
+                <option>Flight</option>
+                <option>Train</option>
+                <option>Bus</option>
+                <option>Car</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Notes</label>
+            <textarea name="notes" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Save Trip</button>
+
+    </form>
+</div>
+
+{% endblock %}

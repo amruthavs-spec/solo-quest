@@ -1,0 +1,21 @@
+body {
+    background-color: #f4f9ff;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.navbar {
+    border-radius: 0 0 10px 10px;
+}
+
+h1, h2, h3, h4 {
+    color: #0d6efd;
+}
+
+.btn {
+    border-radius: 8px;
+}

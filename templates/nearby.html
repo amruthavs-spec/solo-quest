@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Nearby Services</h2>
+<hr>
+
+<h4>🏥 Hospitals</h4>
+<div class="row">
+    {% for hospital in hospitals %}
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm mb-3">
+            <h5>{{ hospital.name }}</h5>
+            <p>{{ hospital.address }}</p>
+            <small>{{ hospital.distance }}</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h4 class="mt-4">🚔 Police Stations</h4>
+<div class="row">
+    {% for station in police %}
+    <div class="col-md-4">
+        <div class="card p-3 shadow-sm mb-3">
+            <h5>{{ station.name }}</h5>
+            <p>{{ station.address }}</p>
+            <small>{{ station.distance }}</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

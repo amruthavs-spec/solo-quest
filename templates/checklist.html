@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Safety Checklist</h2>
+<hr>
+
+<form method="POST">
+
+    {% for item in items %}
+    <div class="form-check mb-2">
+        <input class="form-check-input"
+               type="checkbox"
+               name="{{item}}"
+               {% if saved.get(item) == 1 %} checked {% endif %}>
+        <label class="form-check-label">
+            {{item}}
+        </label>
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-success mt-3">Save Checklist</button>
+</form>
+
+{% endblock %}

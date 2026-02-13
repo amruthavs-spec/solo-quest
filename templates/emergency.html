@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Emergency Contacts</h2>
+<hr>
+
+<div class="card p-4 shadow-sm mb-4">
+    <form method="POST">
+
+        <div class="mb-3">
+            <input type="text" name="name" class="form-control" placeholder="Name" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" name="relation" class="form-control" placeholder="Relationship" required>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
+        </div>
+
+        <button type="submit" class="btn btn-danger w-100">Add Contact</button>
+    </form>
+</div>
+
+<h4>Saved Contacts</h4>
+
+<div class="row">
+    {% for contact in contacts %}
+    <div class="col-md-4">
+        <div class="card p-3 mb-3 shadow-sm">
+            <h5>{{ contact[2] }}</h5>
+            <p>{{ contact[3] }}</p>
+            <p>{{ contact[4] }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

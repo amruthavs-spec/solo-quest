@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Welcome, {{ session['user_name'] }} 👋</h2>
+
+<hr>
+
+{% if trip %}
+<div class="card p-3 shadow-sm mb-4">
+    <h4>Upcoming Trip</h4>
+    <p><strong>Destination:</strong> {{ trip[2] }}</p>
+    <p><strong>Dates:</strong> {{ trip[3] }} to {{ trip[4] }}</p>
+</div>
+{% else %}
+<p>No trip planned yet.</p>
+{% endif %}
+
+<h5>Safety Progress</h5>
+<div class="progress mb-4">
+  <div class="progress-bar bg-success" role="progressbar"
+       style="width: {{progress}}%;">
+       {{progress}}%
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <a href="/planner" class="btn btn-outline-primary w-100 mb-2">Create Trip</a>
+    </div>
+    <div class="col-md-3">
+        <a href="/emergency" class="btn btn-outline-danger w-100 mb-2">Emergency Contacts</a>
+    </div>
+    <div class="col-md-3">
+        <a href="/nearby" class="btn btn-outline-warning w-100 mb-2">Nearby Services</a>
+    </div>
+    <div class="col-md-3">
+        <a href="/checklist" class="btn btn-outline-success w-100 mb-2">Safety Checklist</a>
+    </div>
+</div>
+
+{% endblock %}
