@@ -13,6 +13,7 @@
 - Member 2: Amrutha V S - [Rajiv Gandhi Institute of Technology , Kottayam]
 
 ### Hosted Project Link
+solo-quest-j1jgp4uqg-sreelakshmiajayan-ship-its-projects.vercel.app
 
 
 ### Project Description
