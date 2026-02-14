@@ -1,7 +1,7 @@
 /* ---------- GLOBAL STYLES ---------- */
 body {
   font-family: 'Roboto', Arial, sans-serif;
-  background: linear-gradient(135deg, #0b0909,#9c3333);
+  background: linear-gradient(135deg, #c79191,#b11717);
   margin: 0;
   padding: 0;
   color: #333;
@@ -110,7 +110,7 @@ textarea {
 .priority {
   font-weight: bold;
   margin-left: 10px;
-  color:#982a5f;
+  color:#c05287;
 }
 
 /* ---------- CARDS & BADGES ---------- */
